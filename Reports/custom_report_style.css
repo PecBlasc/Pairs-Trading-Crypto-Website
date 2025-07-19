@@ -1,0 +1,172 @@
+/* ===============================
+   ✨ Pairs Trading Report - Styling
+   =============================== */
+
+/* Import font elegante */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Roboto+Slab:wght@600&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  background: url("bitcoin_background.jpg") no-repeat center center fixed;
+  background-size: cover;
+  color: #f2f2f2;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 95%;
+  margin: 100px auto 40px;
+  padding: 2rem;
+  background-color: rgba(0, 0, 0, 0.75);
+  border-radius: 16px;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+  animation: fadeIn 1.2s ease-in-out;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Roboto Slab', serif;
+  color: #00ffff;
+  margin-top: 1.8rem;
+  text-shadow: 0 0 6px #00ffff;
+}
+
+p, li, td, th {
+  font-size: 1rem;
+  color: #e0e0e0;
+}
+
+strong {
+  color: #ffffff;
+}
+
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #000;
+  color: #00ffff;
+  padding: 0.7rem 2rem;
+  z-index: 9999;
+  box-shadow: 0 4px 6px rgba(0, 255, 255, 0.2);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.topbar-title {
+  font-weight: bold;
+  margin-right: 1rem;
+}
+
+.topbar-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.topbar-links a {
+  color: #00ffff;
+  text-decoration: none;
+  font-size: 0.95rem;
+  background-color: rgba(0, 255, 255, 0.1);
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.topbar-links a:hover {
+  background-color: #00ffff;
+  color: #000;
+  transform: scale(1.05);
+}
+
+.footer-links {
+  text-align: center;
+  margin-top: 2rem;
+  color: #00ffff;
+  font-size: 0.9rem;
+}
+
+.footer-links a {
+  color: #00ffff;
+  text-decoration: none;
+  margin: 0 0.5rem;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+/* Table styling */
+table {
+  width: 100%;
+  margin: 1rem 0;
+  border-collapse: collapse;
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+th, td {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.75rem 1rem;
+  text-align: left;
+}
+
+th {
+  background-color: rgba(0, 255, 255, 0.15);
+}
+
+/* Code & pre blocks */
+pre, code {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #00ffcc;
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9rem;
+  overflow-x: auto;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .topbar-links a {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.5rem;
+  }
+  .container {
+    padding: 1rem;
+  }
+  h1 {
+    font-size: 1.7rem;
+  }
+}
+
+/* Chart centering */
+img, .r-plot {
+  display: block;
+  margin: 2rem auto;
+  max-width: 95%;
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+}
+
+/* Optional overlay filter */
+body::after {
+  content: "";
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+  z-index: -1;
+}

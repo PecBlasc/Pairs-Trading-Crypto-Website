@@ -1,0 +1,93 @@
+---
+title: "Pairs Trading Report: `r params$asset1` / `r params$asset2`"
+author: "Nicolò Blasco Pecoraro"
+date: "`r format(Sys.Date(), '%d %B %Y')`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+    theme: null
+    highlight: zenburn
+    css: custom_report_style.css
+params:
+  asset1: NULL
+  asset2: NULL
+  entry: NULL
+  exit: NULL
+  crypto_data: NULL
+---
+<!-- Sidebar per navigazione report -->
+<div class="sidebar">
+  <h2>📊 Reports</h2>
+  <ul>
+    <li><a href="BTCUSD_DOGEUSD_report.html">BTC/USD - DOGE/USD</a></li>
+    <li><a href="BTCUSD_XRPUSD_report.html">BTC/USD - XRP/USD</a></li>
+    <li><a href="DOGEUSD_ADAUSD_report.html">DOGE/USD - ADA/USD</a></li>
+    <li><a href="DOGEUSD_XRPUSD_report.html">DOGE/USD - XRP/USD</a></li>
+    <li><a href="ETHUSD_ADAUSD_report.html">ETH/USD - ADA/USD</a></li>
+    <li><a href="ETHUSD_DOGEUSD_report.html">ETH/USD - DOGE/USD</a></li>
+    <li><a href="ETHUSD_SOLUSD_report.html">ETH/USD - SOL/USD</a></li>
+    <li><a href="LTCUSD_ADAUSD_report.html">LTC/USD - ADA/USD</a></li>
+    <li><a href="SOLUSD_DOGEUSD_report.html">SOL/USD - DOGE/USD</a></li>
+    <li><a href="SOLUSD_XRPUSD_report.html">SOL/USD - XRP/USD</a></li>
+    <li><a href="XRPUSD_ADAUSD_report.html">XRP/USD - ADA/USD</a></li>
+    <li><a href="XRPUSD_LTCUSD_report.html">XRP/USD - LTC/USD</a></li>
+  </ul>
+</div>
+
+<!-- Inizio contenuto principale -->
+<div class="container">
+
+```{r setup, include=FALSE}
+library(PerformanceAnalytics)
+library(xts)
+library(ggplot2)
+library(scales)
+library(knitr)
+
+options(digits = 3, scipen = 999)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+## Strategy Overview
+
+You are analyzing the pair:  
+**`r params$asset1` / `r params$asset2`**
+
+- Entry Threshold: `r params$entry`  
+- Exit Threshold: `r params$exit`
+
+---
+
+## Strategy Performance
+
+```{r strategy}
+x <- params$crypto_data[[params$asset1]]
+y <- params$crypto_data[[params$asset2]]
+df <- na.omit(merge(x, y))
+
+log_x <- log(df[, 1])
+log_y <- log(df[, 2])
+model <- lm(log_x ~ log_y)
+spread <- residuals(model)
+spread_ret <- diff(log_x - coef(model)[2] * log_y)
+zscore <- (spread - mean(spread)) / sd(spread)
+
+positions <- rep(0, length(zscore))
+for (j in 2:length(zscore)) {
+  if (zscore[j - 1] > params$entry) {
+    positions[j] <- -1
+  } else if (zscore[j - 1] < -params$entry) {
+    positions[j] <- 1
+  } else if (abs(zscore[j - 1]) < params$exit) {
+    positions[j] <- 0
+  } else {
+    positions[j] <- positions[j - 1]
+  }
+}
+
+positions_xts <- xts(positions, order.by = index(zscore))
+strategy_ret <- lag(positions_xts) * spread_ret
+strategy_ret <- na.omit(strategy_ret)
+
+charts.PerformanceSummary(strategy_ret,
+  main = paste("Performance Summary:", params$asset1, "/", params$asset2))
