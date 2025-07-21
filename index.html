@@ -108,38 +108,38 @@
     <input type="text" id="searchInput" placeholder="Search a pair (e.g. BTC/USD)">
   </div>
 
-<div class="report-list" id="reportList">
-  <a href="BTCUSD_DOGEUSD_report.html" class="report-card">BTC-USD / DOGE-USD</a>
-  <a href="BTCUSD_XRPUSD_report.html" class="report-card">BTC-USD / XRP-USD</a>
-  <a href="DOGEUSD_ADAUSD_report.html" class="report-card">DOGE-USD / ADA-USD</a>
-  <a href="DOGEUSD_XRPUSD_report.html" class="report-card">DOGE-USD / XRP-USD</a>
-  <a href="ETHUSD_ADAUSD_report.html" class="report-card">ETH-USD / ADA-USD</a>
-  <a href="ETHUSD_DOGEUSD_report.html" class="report-card">ETH-USD / DOGE-USD</a>
-  <a href="ETHUSD_SOLUSD_report.html" class="report-card">ETH-USD / SOL-USD</a>
-  <a href="LTCUSD_ADAUSD_report.html" class="report-card">LTC-USD / ADA-USD</a>
-  <a href="SOLUSD_DOGEUSD_report.html" class="report-card">SOL-USD / DOGE-USD</a>
-  <a href="XRPUSD_ADAUSD_report.html" class="report-card">XRP-USD / ADA-USD</a>
-</div>
+  <div class="report-list" id="reportList">
+    <a href="BTCUSD_DOGEUSD_report.html" class="report-card">BTC-USD / DOGE-USD</a>
+    <a href="BTCUSD_XRPUSD_report.html" class="report-card">BTC-USD / XRP-USD</a>
+    <a href="DOGEUSD_ADAUSD_report.html" class="report-card">DOGE-USD / ADA-USD</a>
+    <a href="DOGEUSD_XRPUSD_report.html" class="report-card">DOGE-USD / XRP-USD</a>
+    <a href="ETHUSD_ADAUSD_report.html" class="report-card">ETH-USD / ADA-USD</a>
+    <a href="ETHUSD_DOGEUSD_report.html" class="report-card">ETH-USD / DOGE-USD</a>
+    <a href="ETHUSD_SOLUSD_report.html" class="report-card">ETH-USD / SOL-USD</a>
+    <a href="LTCUSD_ADAUSD_report.html" class="report-card">LTC-USD / ADA-USD</a>
+    <a href="SOLUSD_DOGEUSD_report.html" class="report-card">SOL-USD / DOGE-USD</a>
+    <a href="XRPUSD_ADAUSD_report.html" class="report-card">XRP-USD / ADA-USD</a>
+  </div>
 
   <script>
-    // 🔍 Live search
-    const searchInput = document.getElementById("searchInput");
-    searchInput.addEventListener("input", () => {
-      const query = searchInput.value.toUpperCase();
-      document.querySelectorAll(".report-card").forEach(card => {
-        const match = card.textContent.toUpperCase().includes(query);
-        card.style.display = match ? "inline-block" : "none";
+    // 🔍 Live search + DOM fixes
+    document.addEventListener("DOMContentLoaded", () => {
+      const searchInput = document.getElementById("searchInput");
+      searchInput.addEventListener("input", () => {
+        const query = searchInput.value.toUpperCase();
+        document.querySelectorAll(".report-card").forEach(card => {
+          const match = card.textContent.toUpperCase().includes(query);
+          card.style.display = match ? "inline-block" : "none";
+        });
       });
-    });
 
-    // 🚫 Blocca nuove finestre (tipo popup)
-    window.open = function() {
-      console.warn("Window.open attempt blocked");
-      return null;
-    };
+      // 🚫 Blocca nuove finestre (tipo popup)
+      window.open = function() {
+        console.warn("Window.open attempt blocked");
+        return null;
+      };
 
-    // Rimuove target=_blank per evitare tab extra
-    document.addEventListener('DOMContentLoaded', () => {
+      // 🔗 Rimuove target="_blank" da tutti i link
       const allLinks = document.querySelectorAll("a[target='_blank']");
       allLinks.forEach(link => link.removeAttribute("target"));
     });
